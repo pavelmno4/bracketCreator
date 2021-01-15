@@ -23,12 +23,13 @@ public class Main {
 
         List<Participant> participants = List.of(
                 new Participant(1, "Петя", "Иванов", 2012, 42, "Чижик"),
-                new Participant(2, "Вася", "Петров", 2014, 44, "Мотылёк"),
+                new Participant(2, "Вася", "Петров", 2011, 44, "Мотылёк"),
                 new Participant(3, "Игорь", "Васильев", 2012, 41, "Бабочки"),
-                new Participant(4, "Лёша", "Сидоров", 2012, 46, "Лягушки")
+                new Participant(4, "Лёша", "Сидоров", 2012, 46, "Лягушки"),
+                new Participant(5, "Игнат", "Теренко", 2012, 29, "Травушка")
         );
 
-        int YEAR_NOW = LocalDate.now().getYear();
+        int yearNow = LocalDate.now().getYear();
 
         Set<Category> categories = new HashSet<>();
 
@@ -36,15 +37,26 @@ public class Main {
             for (int weight : ac.getWeights()) {
                 List<Participant> prts =
                         participants.stream()
-                                .filter(p -> ((YEAR_NOW - p.getBirthYear()) >= ac.getLowAgeLimit() &
-                                        (YEAR_NOW - p.getBirthYear()) <= ac.getHighAgeLimit()))
-                                .filter(p -> p.getWeight() <= 45)
+                                .filter(p -> ((yearNow - p.getBirthYear()) >= ac.getLowAgeLimit() &
+                                        (yearNow - p.getBirthYear()) <= ac.getHighAgeLimit()))
+                                .filter(p -> weightCategory(p.getWeight(), ac.getWeights()) == weight)
                                 .collect(Collectors.toList());
 
-                categories.add(new Category(ac, 45, prts));
+                categories.add(new Category(ac, weight, prts));
             }
         }
 
-        System.out.println(categories);
+        categories.stream()
+                .filter(c -> !c.getParticipants().isEmpty())
+                .forEach(System.out::println);
+
+    }
+
+    public static int weightCategory(int weight, List<Integer> weightCategories) {
+        List<Integer> cts =
+                weightCategories.stream()
+                        .filter(c -> c >= weight)
+                        .collect(Collectors.toList());
+        return cts.get(0);
     }
 }

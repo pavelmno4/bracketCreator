@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Pair<P> {
-    private P participantOne;
-    private P participantTwo;
+public class Pair<T> {
+    private T prtOne;
+    private T prtTwo;
 }

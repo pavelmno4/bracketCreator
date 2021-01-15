@@ -1,5 +1,7 @@
 package structure;
 
-public interface Grid {
-    void create();
+import java.util.List;
+
+public interface Grid<T> {
+    List<Pair<T>> create();
 }

@@ -1,30 +1,33 @@
 package structure;
 
-import entity.Participant;
-
+import java.util.ArrayList;
 import java.util.List;
 
-public class OlympicGrid implements Grid {
-    private List<Participant> participants;
-    private int size;
+public class OlympicGrid<T> implements Grid<T> {
+    private final List<T> participants;
 
-    public OlympicGrid(List<Participant> participants) {
+    public OlympicGrid(List<T> participants) {
         this.participants = participants;
+    }
 
-        int coefficient = participants.size() / 32;
-
-        if (coefficient > 0.5 & coefficient <= 1) {
-            size = 32;
-        } else if (coefficient > 0.25 & coefficient <= 0.5) {
-            size = 16;
-        } else {
-            size = 8;
-        }
+    private static double customLog(int base, int logNumber) {
+        return (Math.log(logNumber) / Math.log(base));
     }
 
     @Override
-    public void create() {
+    public List<Pair<T>> create() {
+        int circles = (int) Math.ceil(customLog(2, participants.size()));
+        int countOfPositions = (int) Math.pow(2, circles);
 
+        List<Pair<T>> pairs = new ArrayList<>();
 
+        for (int i = 0; i < countOfPositions / 2; i++) {
+            try {
+                pairs.add(new Pair<>(participants.get(i), participants.get(i + (countOfPositions / 2))));
+            } catch (ArrayIndexOutOfBoundsException e) {
+                pairs.add(new Pair<>(participants.get(i), null));
+            }
+        }
+        return pairs;
     }
 }

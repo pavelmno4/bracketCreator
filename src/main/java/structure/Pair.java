@@ -1,14 +1,11 @@
 package structure;
 
-import entity.Participant;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
-public class Pair {
-    private Participant participantOne;
-    private Participant participantTwo;
+@Data
+@AllArgsConstructor
+public class Pair<P> {
+    private P participantOne;
+    private P participantTwo;
 }

@@ -2,6 +2,6 @@ package structure;
 
 import java.util.List;
 
-public interface Grid<T> {
+public interface System<T> {
     List<Pair<T>> create();
 }

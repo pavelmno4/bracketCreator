@@ -1,24 +1,25 @@
-import entity.AgeCategory;
+import entity.Category;
 import entity.Participant;
-import structure.Category;
-import structure.Grid;
-import structure.OlympicGrid;
+import service.CategoryService;
+import service.PartPrinter;
+import structure.OlympicSystem;
+import structure.System;
 
-import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
 
         List<Integer> prtInt = Arrays.asList(1, 2, 3, 4, 5, 6);
 
-        Grid<Integer> integerOlympicGrid = new OlympicGrid<>(prtInt);
+        System<Integer> integerOlympicSystem = new OlympicSystem<>(prtInt);
 //        System.out.println(integerOlympicGrid.create());
 
         List<String> prtStr = List.of("Петя", "Гриша", "Аркаша", "Гена", "Вовка");
 
-        Grid<String> stringOlympicGrid = new OlympicGrid<>(prtStr);
+        System<String> stringOlympicSystem = new OlympicSystem<>(prtStr);
 //        System.out.println(stringOlympicGrid.create());
 
         List<Participant> participants = List.of(
@@ -29,34 +30,12 @@ public class Main {
                 new Participant(5, "Игнат", "Теренко", 2012, 29, "Травушка")
         );
 
-        int yearNow = LocalDate.now().getYear();
+        Set<Category> categories = new CategoryService().createCategories(participants);
 
-        Set<Category> categories = new HashSet<>();
-
-        for (AgeCategory ac : AgeCategory.values()) {
-            for (int weight : ac.getWeights()) {
-                List<Participant> prts =
-                        participants.stream()
-                                .filter(p -> ((yearNow - p.getBirthYear()) >= ac.getLowAgeLimit() &
-                                        (yearNow - p.getBirthYear()) <= ac.getHighAgeLimit()))
-                                .filter(p -> weightCategory(p.getWeight(), ac.getWeights()) == weight)
-                                .collect(Collectors.toList());
-
-                categories.add(new Category(ac, weight, prts));
-            }
-        }
-
+        PartPrinter<Participant> partPrinter = new PartPrinter<>();
         categories.stream()
                 .filter(c -> !c.getParticipants().isEmpty())
-                .forEach(System.out::println);
-
-    }
-
-    public static int weightCategory(int weight, List<Integer> weightCategories) {
-        List<Integer> cts =
-                weightCategories.stream()
-                        .filter(c -> c >= weight)
-                        .collect(Collectors.toList());
-        return cts.get(0);
+//                .forEach(java.lang.System.out::println)
+        .forEach(c -> partPrinter.print(c.getParticipants()));
     }
 }

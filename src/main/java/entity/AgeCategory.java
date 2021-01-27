@@ -1,10 +1,12 @@
 package entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.List;
 
 @Getter
+@AllArgsConstructor
 public enum AgeCategory {
     CAT_8_9(8, 9, List.of(23, 25, 27, 30, 34, 38, 42, Integer.MAX_VALUE)),
     CAT_10_11(10, 11, List.of(27, 30, 34, 38, 42, 46, 50, 55, Integer.MAX_VALUE)),
@@ -14,10 +16,4 @@ public enum AgeCategory {
     private final int lowAgeLimit;
     private final int highAgeLimit;
     private final List<Integer> weights;
-
-    AgeCategory(int lowAgeLimit, int highAgeLimit, List<Integer> weights) {
-        this.lowAgeLimit = lowAgeLimit;
-        this.highAgeLimit = highAgeLimit;
-        this.weights = weights;
-    }
 }

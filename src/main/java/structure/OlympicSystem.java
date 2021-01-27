@@ -3,10 +3,10 @@ package structure;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OlympicGrid<T> implements Grid<T> {
+public class OlympicSystem<T> implements System<T> {
     private final List<T> participants;
 
-    public OlympicGrid(List<T> participants) {
+    public OlympicSystem(List<T> participants) {
         this.participants = participants;
     }
 

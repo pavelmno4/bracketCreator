@@ -1,7 +1,5 @@
-package structure;
+package entity;
 
-import entity.AgeCategory;
-import entity.Participant;
 import lombok.Data;
 
 import java.util.List;

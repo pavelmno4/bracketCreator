@@ -12,4 +12,9 @@ public class Participant {
     private int birthYear;
     private int weight;
     private String team;
+
+    @Override
+    public String toString() {
+        return lastName + " " + firstName + " /" + team;
+    }
 }

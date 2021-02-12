@@ -32,46 +32,58 @@ public class OlympicGridSystem implements GridSystem<Participant> {
 
     @Override
     public List<Participant> create() {
-        int index = 0;
+        fillTheIntermediateListFromFirst();
 
-        for (Participant p : firstList) {
-            intermediateList.set(index, p);
-            index += 2;
-        }
-
+        // Попробовать сделать рекурсивно для меньшего подсписка
+        // **
         List<Participant> a = intermediateList.subList(0, (intermediateList.size() / 2));
         List<Participant> b = intermediateList.subList((intermediateList.size() / 2), intermediateList.size());
 
-
         for (Participant sp : secondList) {
-            int count = 0;
-
             if (!StreamEx.of(a)
                     .filter(p -> p.getId() != -1)
                     .map(Participant::getTeam)
                     .has(sp.getTeam())
             ) {
-                for (int i = 0; i < a.size(); i++) {
-                    if (a.get(i).getId() == -1 && count == 0) {
-                        a.set(i, sp);
-                        count++;
-                    }
-                }
-
+                fillFromSecondList(sp, a);
             } else {
-                for (int i = 0; i < b.size(); i++) {
-                    if (b.get(i).getId() == -1 && count == 0) {
-                        b.set(i, sp);
-                        count++;
-                    }
-                }
+                fillFromSecondList(sp, b);
             }
         }
 
         return StreamEx.of(a).append(b).toList();
+        // **
     }
 
     private static double customLog(int base, int logNumber) {
         return (Math.log(logNumber) / Math.log(base));
+    }
+
+    private void fillTheIntermediateListFromFirst() {
+        int ind = 0;
+
+        ind = fillFromFirstList(ind, 0);
+        fillFromFirstList(ind, 1);
+    }
+
+    private int fillFromFirstList(int ind, int remainderOfDivision) {
+        int index = ind;
+
+        for (int i = 0; i < intermediateList.size(); i++) {
+            if (i % 2 == remainderOfDivision && index < firstList.size()) {
+                intermediateList.set(i, firstList.get(index));
+                index++;
+            }
+        }
+        return index;
+    }
+
+    private void fillFromSecondList(Participant p, List<Participant> list) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getId() == -1) {
+                list.set(i, p);
+                break;
+            }
+        }
     }
 }

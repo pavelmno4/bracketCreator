@@ -21,8 +21,8 @@ public enum Grid {
     GRID_32(32,
             "/home/pkozlov/IdeaProjects/bracketCreator/src/main/resources/grid/teams_32.png",
             62,
-            85,
-            25
+            86,
+            24
     );
 
     private final int amount;
